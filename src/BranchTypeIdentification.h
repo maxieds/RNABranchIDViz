@@ -8,14 +8,9 @@
 #ifndef __RNABRANCHTYPEIDENT_H__
 #define __RNABRANCHTYPEIDENT_H__
 
-#include <FL/fl_draw.H>
-#include "RNAStructure.h" 
+#include <cairo.h>
 
-#define FL_COLOR_BRANCH_UNDEFINED     (FL_BLACK)
-#define FL_COLOR_BRANCH1              (fl_rgb_color(92, 160, 215))
-#define FL_COLOR_BRANCH2              (fl_rgb_color(183, 127, 77))
-#define FL_COLOR_BRANCH3              (fl_rgb_color(243, 153, 193))
-#define FL_COLOR_BRANCH4              (fl_rgb_color(123, 204, 153))
+#include "RNAStructure.h" 
 
 #define NUM_BRANCHES                  (4)
 
@@ -71,7 +66,7 @@ class RNABranchType_t {
           const RNAStructure::BaseData* getBranchParent() const;
           void setBranchParent(class RNAStructure::BaseData* bparent); 
 
-          static void SetFLBranchColor(BranchID_t bt);
+          static void SetBranchColor(cairo_t * &cr, BranchID_t bt);
 
           static bool PerformBranchClassification(class RNAStructure *rnaStructArray, unsigned int alength);
 

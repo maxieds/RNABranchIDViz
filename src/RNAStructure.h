@@ -6,8 +6,6 @@
 #define RNASTRUCTURE_H
 
 #include <stdio.h>
-#include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Text_Display.H>
 #include <vector>
 
 #define MAX(x, y)         (x <= y ? y : x)
@@ -145,11 +143,6 @@ public:
     const char* GetFilename() const;
 
     /*
-	Display the contents of the file in a window (or bring it to the top if already existing).
-    */
-    void DisplayFileContents();
- 
-    /*
         Returns a reference to the local m_sequence BaseData* pointer. 
     */
     inline BaseData* & getSequence() {
@@ -187,12 +180,7 @@ private:
     // The full path name of the file from which this sequence came.
     char* m_pathname;
 
-    // Info for displaying the file contents
-    Fl_Double_Window* m_contentWindow;
-    Fl_Text_Display* m_textDisplay;
-    Fl_Text_Buffer* m_textBuffer;
     char* m_displayString;
-    
     char* charSeq;
     unsigned int charSeqSize;
 };

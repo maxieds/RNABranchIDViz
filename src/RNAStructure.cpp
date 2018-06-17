@@ -2,9 +2,6 @@
 #include "BranchTypeIdentification.h"
 #include <stdlib.h>
 #include <fstream>
-#include <FL/Fl.H>
-#include <FL/fl_ask.H>
-#include <FL/Fl_Box.H>
 #include <string.h>
 #include <vector>
 
@@ -13,7 +10,6 @@ const unsigned int RNAStructure::UNPAIRED = ~0x0;
 RNAStructure::RNAStructure()
     : m_sequenceLength(0)
     , m_sequence(0)
-    , m_contentWindow(0)
     , m_displayString(0)
 {
      branchType = NULL; //new RNABranchType_t(BRANCH_UNDEFINED, NULL);
@@ -21,11 +17,6 @@ RNAStructure::RNAStructure()
 
 RNAStructure::~RNAStructure()
 {
-
-    if (m_contentWindow)
-    {
-		Fl::delete_widget(m_contentWindow);
-    }
 
     free(m_displayString); //m_displayString = NULL;
 
@@ -73,11 +64,11 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
     {
 		if (strlen(filename) > 1000)
 		{
-		    fl_message("Unable to open file: <file name too long>");
+		    fprintf(stderr, "Unable to open file: <file name too long>");
 		}
 		else
 		{
-		    fl_message("Unable to open file: %s", filename);
+		    fprintf(stderr, "Unable to open file: %s", filename);
 		}
 		inStream.close();
 		return 0;
@@ -154,13 +145,11 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
 		    default: {
 			if (strlen(filename) > 980)
 			{
-			    fl_message("Bad base: id %d, <file name too long>", 
-			    	result->m_sequenceLength + 1);
+			    fprintf(stderr, "Bad base: id %d, <file name too long>", result->m_sequenceLength + 1);
 			}
 			else
 			{
-			    fl_message("Bad base: id %d, file %s", 
-			    	result->m_sequenceLength + 1, filename);
+			    fprintf(stderr, "Bad base: id %d, file %s", result->m_sequenceLength + 1, filename);
 			}
 			delete result;
 		    	inStream.close();
@@ -174,13 +163,12 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
 		    {
 				if (strlen(filename) > 980)
 				{
-				    fl_message("Bad prev id: id %d, <file name too long>", 
-				    	result->m_sequenceLength + 1);
+				    fprintf(stderr, "Bad prev id: id %d, <file name too long>", result->m_sequenceLength + 1);
 				}
 				else
 				{
-				    fl_message("Bad prev id: id %d, file %s", 
-				    	result->m_sequenceLength + 1, filename);
+				    fprintf(stderr, "Bad prev id: id %d, file %s", 
+				    	    result->m_sequenceLength + 1, filename);
 				}
 				delete result;
 				inStream.close();
@@ -191,13 +179,13 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
 		    {
 				if (strlen(filename) > 980) 
 				{
-				    fl_message("Bad next id: id %d, <file name too long>", 
-				    	result->m_sequenceLength + 1);
+				    fprintf(stderr, "Bad next id: id %d, <file name too long>", 
+				    	    result->m_sequenceLength + 1);
 				}
 				else
 				{
-				    fl_message("Bad next id: id %d, file %s", 
-				    	result->m_sequenceLength + 1, filename);
+				    fprintf(stderr, "Bad next id: id %d, file %s", 
+				    	    result->m_sequenceLength + 1, filename);
 				}
 				delete result;
 				inStream.close();
@@ -209,14 +197,14 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
 		{
 		    if (strlen(filename) > 980) 
 		    {
-				fl_message("Bad pair: id %d, <file name too long>", 
+				fprintf(stderr, "Bad pair: id %d, <file name too long>", 
 					result->m_sequenceLength + 1);
-			}
+		    }
 		    else
 		    {
-				fl_message("Bad pair: id %d, file %s", 
+				fprintf(stderr, "Bad pair: id %d, file %s", 
 					result->m_sequenceLength + 1, filename);
-			}
+		    }
 		    delete result;
 		    inStream.close();
 		    return 0;
@@ -237,13 +225,13 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
 		    {
 				if (strlen(filename) > 980)
 				{
-				    fl_message("Bad trailing id: id %d, <file name too long>", 
-				    	result->m_sequenceLength + 1);
+				    fprintf(stderr, "Bad trailing id: id %d, <file name too long>", 
+				    	    result->m_sequenceLength + 1);
 				}
 				else
 				{
-				    fl_message("Bad trailing id: id %d, file %s", 
-				    	result->m_sequenceLength + 1, filename);
+				    fprintf(stderr, "Bad trailing id: id %d, file %s", 
+				    	    result->m_sequenceLength + 1, filename);
 				}
 				delete result;
 				inStream.close();
@@ -265,9 +253,9 @@ RNAStructure* RNAStructure::CreateFromFile(const char* filename,
     if (result->m_sequenceLength == 0)
     {
 		if (strlen(filename) > 990) 
-		    fl_message("Empty or malformed file: <file name too long>");
+		    fprintf(stderr, "Empty or malformed file: <file name too long>");
 		else
-		    fl_message("Empty or malformed file: %s", filename);
+		    fprintf(stderr, "Empty or malformed file: %s", filename);
 		delete result;
 		return 0;
     }
@@ -301,31 +289,6 @@ const char* RNAStructure::GetFilename() const
 		return m_pathname;
 	}
     return ++basename;
-}
-
-void RNAStructure::DisplayFileContents()
-{
-    if (!m_displayString)
-	GenerateString();
-
-    if (!m_contentWindow)
-    {
-		m_contentWindow = new Fl_Double_Window(220, 600, GetFilename());
-		Fl_Box* resizeBox = new Fl_Box(0, 0, 220, 600);
-		m_contentWindow->resizable(resizeBox);
-		m_contentWindow->size_range(220, 300);
-	
-		m_textDisplay = new Fl_Text_Display(0, 0, 220, 600);
-	
-		Fl_Text_Buffer* textBuffer = 
-			new Fl_Text_Buffer(strlen(m_displayString));
-		textBuffer->text(m_displayString);
-		m_textDisplay->buffer(textBuffer);
-		m_textDisplay->textfont(FL_COURIER);
-
-    }
-
-    m_contentWindow->show();
 }
 
 void RNAStructure::GenerateString()

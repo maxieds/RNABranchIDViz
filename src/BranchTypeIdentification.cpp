@@ -42,22 +42,22 @@ void RNABranchType_t::setBranchParent(class RNAStructure::BaseData* bparent) {
      branchParent = bparent;
 }
 
-void RNABranchType_t::SetFLBranchColor(BranchID_t bt) {
+void RNABranchType_t::SetBranchColor(cairo_t * &cr, BranchID_t bt) {
      switch(bt) {
           case BRANCH_UNDEFINED:
-               fl_color(FL_COLOR_BRANCH_UNDEFINED);
+               cairo_set_source_rgb(cr, 0.0, 0.0, 0.0); 
                break;
           case BRANCH1:
-               fl_color(FL_COLOR_BRANCH1);
+               cairo_set_source_rgb(cr, 92.0 / 255, 160.0 / 255, 215.0 / 255);
                break;
           case BRANCH2:
-               fl_color(FL_COLOR_BRANCH2);
+               cairo_set_source_rgb(cr, 183.0 / 255, 127.0 / 255, 77.0 / 255);
                break;
           case BRANCH3:
-               fl_color(FL_COLOR_BRANCH3);
+               cairo_set_source_rgb(cr, 243.0 / 255, 153.0 / 255, 193.0 / 255);
                break;
           case BRANCH4:
-               fl_color(FL_COLOR_BRANCH4);
+               cairo_set_source_rgb(cr, 123.0 / 255, 204.0 / 255, 153.0 / 255);
                break;
           default:
                break;
