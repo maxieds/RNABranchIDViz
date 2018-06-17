@@ -1,0 +1,2 @@
+          static void ParseBranchesByType(RNAStructure *rnaStructBase, vector<RNAStructure::BaseData*> *bdArray);
+          static bool WriteBranchFiles(vector<RNAStructure::BaseData*> *bdArray, const RuntimeConfig_t &runtimeConfig);
