@@ -21,7 +21,6 @@ class DiagramImage_t {
      private:
           RNAStructure *rnaStruct;
           int numPairs;
-          //unsigned char *pixelBuf;
           cairo_surface_t *crSurface;
           cairo_t *crDraw;
           int pixelWidth;
@@ -48,15 +47,6 @@ class DiagramImage_t {
 		double& cX,
 		double& cY,
 		double& r);
-
-          void DrawArc(
-		const unsigned int b1,
-		const unsigned int b2,
-		const float centerX,
-		const float centerY,
-		const float angleBase,
-		const float angleDelta,
-		const float radius);
 
           void DrawArc2(
 		const unsigned int b1,
