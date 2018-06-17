@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "BranchTypeIdentification.h"
 
 
@@ -112,26 +113,29 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure *rnaStructB
                     mostEnclosingArcs[mea] = rnaStructBase->GetBaseAt(rs);
                     rnaStructBase->GetBranchTypeAt(rs).branchID = (BranchID_t) (mea + 1);
                     if(needToResort) {
-                         qsort(&mostEnclosingArcs[0], mostEnclosingArcsSize, sizeof(RNAStructure::BaseData*), compareMostEnclosingArcs);
+                         qsort(&mostEnclosingArcs[0], mostEnclosingArcsSize, 
+                               sizeof(RNAStructure::BaseData*), compareMostEnclosingArcs);
                     }
-                    //for(int i = 0; i < mostEnclosingArcsSize; i++) {
-                    //     fprintf(stderr, "   => %d, %d, %p\n", i, needToResort, mostEnclosingArcs[i]);
-                    //     fprintf(stderr, "   => %d: m_idx=%d, mPD=%d\n", i, mostEnclosingArcs[i]->m_index, 
-                    //             mostEnclosingArcs[i]->getPairDistance());
-                    //}
                     break;
                }
           }
      }
+     // sort the identified branches according to their natural order on the circle:
+     IntIndexPair_t branchOrderMappings[mostEnclosingArcsSize];
+     for(int i = 0; i < mostEnclosingArcsSize; i++) { 
+          branchOrderMappings[i].intValue = MIN(mostEnclosingArcs[i]->m_index, mostEnclosingArcs[i]->m_pair); 
+          branchOrderMappings[i].index = i;
+     }
+     qsort(&branchOrderMappings[0], mostEnclosingArcsSize, sizeof(IntIndexPair_t), compareIntegerIndexPair); 
+     RNAStructure::BaseData* mostEnclosingArcsTemp[4];
+     for(int j = 0; j < mostEnclosingArcsSize; j++) { 
+          mostEnclosingArcsTemp[j] = mostEnclosingArcs[branchOrderMappings[j].index];
+     }
+     memcpy(mostEnclosingArcs, mostEnclosingArcsTemp, mostEnclosingArcsSize * sizeof(RNAStructure::BaseData*));
      // now that we've identified most of the the enclosing branches, 
      // we reset the branch types by number on all (except for the nubbins, 
      // see below) entries in the array: 
      for(int rs = 0; rs < alength; rs++) {
-          //if(mostEnclosingArcsSize < 4) {
-          //     rnaStructBase->GetBranchTypeAt(rs).setBranchID(BRANCH_UNDEFINED);
-          //     rnaStructBase->GetBranchTypeAt(rs).setBranchParent(NULL);
-          //     continue;
-          //}
           bool isNubbin = true;
           for(int mea = 0; mea < mostEnclosingArcsSize; mea++) { 
                if(rnaStructBase->GetBaseAt(rs)->isContainedIn(*(mostEnclosingArcs[mea]))) {
