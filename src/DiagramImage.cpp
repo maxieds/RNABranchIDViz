@@ -13,8 +13,7 @@
 #include "Utils.h"
 
 DiagramImage_t::DiagramImage_t(RNAStructure *rnaStructBase) : 
-     rnaStruct(rnaStructBase), bufferDrawn(false) , numPairs(0), 
-     Fl_Window(800, 700, "No Label") {
+     rnaStruct(rnaStructBase), bufferDrawn(false) , numPairs(0) {
      if (rnaStruct->GetLength() > 1000) {
           pixelWidth = 1;
      } 
@@ -24,28 +23,27 @@ DiagramImage_t::DiagramImage_t(RNAStructure *rnaStructBase) :
      else {
           pixelWidth = 3;
      }
-     pixelBuf = (unsigned char *) malloc(sizeof(unsigned char) * IMAGE_HEIGHT * IMAGE_WIDTH * IMAGE_DEPTH); 
-     memset(pixelBuf, 0xff, IMAGE_HEIGHT * IMAGE_WIDTH * IMAGE_DEPTH);
+     //pixelBuf = (unsigned char *) malloc(sizeof(unsigned char) * IMAGE_HEIGHT * IMAGE_WIDTH * IMAGE_DEPTH); 
+     //memset(pixelBuf, 0xff, IMAGE_HEIGHT * IMAGE_WIDTH * IMAGE_DEPTH);
+     crSurface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, IMAGE_WIDTH, IMAGE_HEIGHT); 
+     crDraw = cairo_create(crSurface);
 }
 
 DiagramImage_t::~DiagramImage_t() { 
-     free(pixelBuf);
-     pixelBuf = NULL;
+     //free(pixelBuf);
+     //pixelBuf = NULL;
+     cairo_destroy(crDraw);
+     cairo_surface_destroy(crSurface);
 } 
 
 int DiagramImage_t::writePNGImage(const char *outputFilePath) { 
      if(!bufferDrawn)
           drawBuffers(); 
-     return Util::WritePNGImage(pixelBuf, IMAGE_WIDTH, IMAGE_HEIGHT, outputFilePath); 
+     return cairo_surface_write_to_png(crSurface, outputFilePath); 
 }
 
 void DiagramImage_t::drawBuffers() { 
     
-    offscreenImage = fl_create_offscreen(IMAGE_WIDTH, IMAGE_HEIGHT);
-    fl_begin_offscreen(offscreenImage); 
-    fl_color(FL_WHITE); //fl_color(FL_BACKGROUND_COLOR);
-    fl_rectf(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-
     float centerX = 0.0f;
     float centerY = 0.0f;
     float angleBase = 0.0f;
@@ -57,18 +55,18 @@ void DiagramImage_t::drawBuffers() {
     ComputeNumPairs(rnaStruct); 
     ComputeDiagramParams(numBases, IMAGE_WIDTH, centerX, centerY, angleBase, angleDelta, radius);
 
-    for (unsigned int ui = 0; ui < numBases; ++ui) {
+    cairo_set_source_rgb(crDraw, 1.0, 1.0, 1.0); 
+    cairo_paint(crDraw);
+    cairo_set_line_width(crDraw, pixelWidth);
+
+    for(unsigned int ui = 0; ui < numBases; ++ui) {
         const RNAStructure::BaseData* baseData1 = rnaStruct->GetBaseAt(ui);
-        //DrawBase(ui, baseData1->m_base, centerX, centerY, angleBase, angleDelta, radius + 7.5f);
 	if (baseData1->m_pair != RNAStructure::UNPAIRED && baseData1->m_pair > ui) {
-             fl_color(FL_BLACK);
-             RNABranchType_t::SetFLBranchColor(rnaStruct->GetBranchTypeAt(ui).getBranchID());
+             RNABranchType_t::SetBranchColor(crDraw, rnaStruct->GetBranchTypeAt(ui).getBranchID());
              DrawArc(ui, baseData1->m_pair, centerX, centerY, angleBase, angleDelta, radius);
 	     counter++;
         }
     }
-    fl_read_image(pixelBuf, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT); 
-    fl_end_offscreen(); 
     bufferDrawn = true;
 
 }
@@ -124,6 +122,7 @@ void DiagramImage_t::DrawArc(
     const float angleDelta,
     const float radius)
 {
+    
     float angle1 = angleBase - (float)b1 * angleDelta;
     float xPosn1 = centerX + cos(angle1) * radius;
     float yPosn1 = centerY - sin(angle1) * radius;
@@ -149,25 +148,64 @@ void DiagramImage_t::DrawArc(
     double arc1 = 180.0 / M_PI * atan2(arcY - yPosn1, xPosn1 - arcX);
     double arc2 = 180.0 / M_PI * atan2(arcY - yPosn2, xPosn2 - arcX);
 
+    //boundSize = boundSize * 0.7071;
+    //cairo_translate(crDraw, boundX, boundY); 
+    //cairo_scale(crDraw, boundSize, boundSize);
     if (arc2 - arc1 > 180.0)
 	arc1 += 360.0;
     if (arc1 - arc2 > 180.0)
 	arc2 += 360.0;
     if (arc2 > arc1) {
-	fl_arc(boundX, boundY, boundSize, boundSize, arc1, arc2);
-        if (pixelWidth > 1) 
-            fl_arc(boundX + 1,boundY + 1,boundSize,boundSize,arc1,arc2);
-        if (pixelWidth > 2)
-            fl_arc(boundX + 1,boundY,boundSize,boundSize,arc1,arc2);
+	cairo_arc(crDraw, boundX, boundY, boundSize, arc1, arc2);
+        //cairo_arc(crDraw, boundX, boundY, boundSize, arc1, arc2);
+        //if (pixelWidth > 1) 
+        //    cairo_arc(crDraw, boundX + 1, boundY + 1, boundSize, arc1, arc2);
+        //if (pixelWidth > 2)
+        //    cairo_arc(crDraw, boundX + 1, boundY, boundSize, arc1, arc2);
     }
     else {
-	fl_arc(boundX, boundY, boundSize, boundSize, arc2, arc1);
-        if (pixelWidth > 1)
-            fl_arc(boundX + 1, boundY + 1, boundSize, boundSize, arc2, arc1);
-        if (pixelWidth > 2)
-            fl_arc(boundX + 1, boundY, boundSize, boundSize, arc2, arc1);
+	cairo_arc(crDraw, boundX, boundY, boundSize, arc2, arc1);
+        //cairo_arc(crDraw, boundX, boundY, boundSize, arc2, arc1);
+        //if (pixelWidth > 1)
+        //    cairo_arc(crDraw, boundX + 1, boundY + 1, boundSize, arc2, arc1);
+        //if (pixelWidth > 2)
+        //    cairo_arc(crDraw, boundX + 1, boundY, boundSize, arc2, arc1);
     }
+    cairo_stroke(crDraw); 
 
+}
+
+void DiagramImage_t::DrawArc2(
+    const unsigned int b1,
+    const unsigned int b2,
+    const float centerX,
+    const float centerY,
+    const float angleBase,
+    const float angleDelta,
+    const float radius)
+{
+    
+    int pairDistance = MAX(b1, b2) - MIN(b1, b2); 
+    float h = radius * pairDistance / numPairs;
+    float theta1 = angleBase - angleDelta * MIN(b1, b2);
+    float theta2 = angleBase - angleDelta * MAX(b1, b2);
+    float P1x = radius * cos(theta1), P1y = radius * sin(theta1); 
+    float P2x = radius * cos(theta2), P2y = radius * sin(theta2); 
+    float arc1 = -1 * acos(P1x / h), arc2 = asin(P2y / h); 
+    float x0, y0;
+    x0 = ((P1x + P2x)*(pow(P1x - P2x,2) + pow(P1y - P2y,2)) - sqrt((-pow(P1x - P2x,2) - pow(P1y - P2y,2)) *
+          (-4*pow(h,2) + pow(P1x - P2x,2) + pow(P1y - P2y,2))*pow(P1y - P2y,2)))/(2.0*(pow(P1x - P2x,2) + pow(P1y - P2y,2)));
+    y0 = (pow(P1y,4) + pow(P1y,2)*pow(P1x - P2x,2) + P1x*sqrt((-pow(P1x - P2x,2) - pow(P1y - P2y,2))*
+         (-4*pow(h,2) + pow(P1x - P2x,2) + pow(P1y - P2y,2))*pow(P1y - P2y,2))- P2x*sqrt((-pow(P1x - P2x,2) - pow(P1y - P2y,2))*
+         (-4*pow(h,2) + pow(P1x - P2x,2) + pow(P1y - P2y,2))*pow(P1y - P2y,2))- 2*pow(P1y,3)*P2y + 2*P1y*pow(P2y,3) - 
+         pow(P2y,2)*(pow(P1x - P2x,2) + pow(P2y,2)))/ (2.0*(pow(P1x - P2x,2) + pow(P1y - P2y,2))*(P1y - P2y));
+    if (arc2 - arc1 > 180.0)
+	arc1 += 360.0;
+    if (arc1 - arc2 > 180.0)
+	arc2 += 360.0;
+
+    cairo_arc(crDraw, x0, y0, h, MIN(arc1, arc2), MAX(arc1, arc2));
+    cairo_stroke(crDraw); 
 }
 
 void DiagramImage_t::ComputeDiagramParams(

@@ -8,22 +8,22 @@
 #ifndef __DIAGRAM_IMAGE_H__
 #define __DIAGRAM_IMAGE_H__
 
-#include <FL/Fl_Window.H>
-#include <FL/x.H>
+#include <cairo.h>
 
 #include "RNAStructure.h"
 
-#define IMAGE_WIDTH       (2048)
-#define IMAGE_HEIGHT      (2048)
+#define IMAGE_WIDTH       (1024)
+#define IMAGE_HEIGHT      (1024)
 #define IMAGE_DEPTH       (3)
 
-class DiagramImage_t : public Fl_Window { 
+class DiagramImage_t { 
 
      private:
           RNAStructure *rnaStruct;
           int numPairs;
-          unsigned char *pixelBuf;
-          Fl_Offscreen offscreenImage;
+          //unsigned char *pixelBuf;
+          cairo_surface_t *crSurface;
+          cairo_t *crDraw;
           int pixelWidth;
           bool bufferDrawn;
 
@@ -58,7 +58,17 @@ class DiagramImage_t : public Fl_Window {
 		const float angleDelta,
 		const float radius);
 
-         void DrawBase(
+          void DrawArc2(
+		const unsigned int b1,
+		const unsigned int b2,
+		const float centerX,
+		const float centerY,
+		const float angleBase,
+		const float angleDelta,
+		const float radius);
+
+         
+          void DrawBase(
 		const unsigned int index,
 		const RNAStructure::Base base,
 		const float centerX,
