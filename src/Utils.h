@@ -16,9 +16,11 @@ using std::vector;
 class Util {
 
      public:
-          static void ParseBranchesByType(RNAStructure *rnaStructBase, RNAStructure::BaseData ** &bdArray, int *btSizes);
-          static bool WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, const RuntimeConfig_t &runtimeConfig);
-
-};
+          static void ParseBranchesByType(RNAStructure *rnaStructBase, 
+                                          RNAStructure::BaseData ** &bdArray, int *btSizes);
+          static bool WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
+                                       const RuntimeConfig_t &runtimeConfig);
+          static bool GenerateBranchDrawImages(const char *outputPrefix, DrawImageType_t drawSpec);
+}; 
 
 #endif 

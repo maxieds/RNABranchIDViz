@@ -6,10 +6,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 
 #include "RuntimeConfig.h"
 #include "BranchTypeIdentification.h"
+#include "DiagramImage.h"
 #include "RNAStructure.h"
 #include "Utils.h"
 
@@ -31,12 +33,22 @@ int main(int argc, char **argv) {
      Util::ParseBranchesByType(rnaStructBase, bdArray, bdSizes);
      Util::WriteBranchFiles(bdArray, bdSizes, runtimeOptions); 
 
-     // TODO: write image files:
      if(runtimeOptions.getOutputImagesOption()) { 
+          DiagramImage_t *rnaSVDiagramImage = new DiagramImage_t(rnaStructBase);
+          char rsvImageOutFile[MAX_FILEPATH_LENGTH]; 
+          snprintf(rsvImageOutFile, MAX_FILEPATH_LENGTH, "%s-RNAStructViz.png", runtimeOptions.getBaseFilePathNoCTOption());
+          rnaSVDiagramImage->writePNGImage(rsvImageOutFile); 
+          delete rnaSVDiagramImage;
+          // TODO: implement second visualization option
+          Util::GenerateBranchDrawImages("test.ps", DEFAULT);
      } 
 
      free(rnaStructBase);
-     // TODO: free on others
+     free(bdSizes); 
+     for(int bd = 0; bd < NUM_BRANCHES; bd++) { 
+          free(bdArray[bd]);
+     } 
+     free(bdArray);
 
      return 0;
 
