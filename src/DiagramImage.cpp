@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <FL/fl_draw.H>
 #include "DiagramImage.h"
 #include "BranchTypeIdentification.h"
 #include "Utils.h"
