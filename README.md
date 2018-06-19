@@ -21,23 +21,6 @@ easily installed on modern Linux systems:
 ```
 $ sudo apt-get install libcairo2-dev
 ``` 
-We will also require the use of the [RNAstructure library](https://rna.urmc.rochester.edu/RNAstructure.html), or 
-at least its ``draw`` package and shared libraries. We first download the library from the official site and 
-extract it to our working directory:
-```
-$ cd ~
-$ export RNASTRUCTZIP=/path/to/RNAstructureSource.tgz
-$ tar xvzf $RNASTRUCTZIP
-$ cd RNAstructure
-``` 
-Next we will need to build the ``draw`` utility and compile it as a shared C++ library so we 
-can link against it when we compile our program. We do this and copy the corresponding header files 
-into our local source repo directory as follows: 
-```
-$ make -f ~/RNABranchIDViz/CopyExternal.Makefile copyexternal
-$ sudo mkdir -p /usr/local/RNAstructure
-$ sudo cp ~/RNABranchIDViz/src/include-external/RNAStructureDraw.so /usr/local/RNAstructure/
-```
 Now we are all set to begin compiling the local utility!
 
 ### Compiling from source on Linux (Debian-Variants)

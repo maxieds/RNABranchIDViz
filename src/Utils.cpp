@@ -14,7 +14,6 @@ using std::map;
 using std::pair;
 
 #include "Utils.h"
-#include "include-external/DrawStructure.h"
 
 void Util::ParseBranchesByType(RNAStructure *rnaStructBase, RNAStructure::BaseData ** &bdArray, int *btSizes) {
      for(int rs = 0; rs < rnaStructBase->GetLength(); rs++) { 
@@ -95,16 +94,6 @@ bool Util::WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, co
 }
 
 bool Util::GenerateBranchDrawImages(const char *outPrefix, DrawImageType_t drawSpec) { 
-
-     DrawStructure ds;
-     char *argv[] = {
-          "draw", 
-          "/home/maxie/RNA-projects/example.ct", 
-          "test.ps", 
-          "-c"
-     };
-     ds.parse(4, argv); 
-     ds.run();
      return true;
 }
 
