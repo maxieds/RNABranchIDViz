@@ -1,7 +1,7 @@
 # RNABranchIDViz
 
 <center>
-<img src="https://github.com/maxieds/RNABranchIDViz/images/d.16.e.E.cuniculi_nop-RNAStructViz.png" width="500" />
+<img src="https://github.com/maxieds/RNABranchIDViz/blob/master/images/d.16.e.E.cuniculi_nop-RNAStructViz.png" width="500" />
 </center>
 
 ## Application Description
