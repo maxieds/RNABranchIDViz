@@ -1,6 +1,29 @@
 # RNABranchIDViz
 
+<center>
+<img src="https://github.com/maxieds/RNABranchIDViz/images/d.16.e.E.cuniculi_nop-RNAStructViz.png" width="500" />
+</center>
+
 ## Application Description
+
+This utility is based on the [RNAStructViz](https://github.com/gtDMMB/RNAStructViz) source developed by 
+researchers at GA Tech. It is a standalone application that is used to identify the four biological 
+branch structures of an organism specified by an input 
+[CT file](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT). 
+The usage of the program is as follows: 
+```
+Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]
+```
+Most of the options specified above are self explanatory. By default, the utility identifies the four 
+branches in the input CT file (first argument above) and then outputs re-numbered CT files for each 
+branch which can be passed into other utilities, plots a color-coded circular image of each of the 
+identified branches in the same format as output in the viewer for 
+[RNAStructViz](https://github.com/gtDMMB/RNAStructViz), and plots each of the branches using a modification of 
+the source code for the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) project (*this last feature is currently 
+under development*). To keep the original indices in the output branch CT files, you can specify the 
+**--no-renumber-CT** option at the commandline. Similarly, to prevent the program from generating the image files 
+for the identified branches, append the **--no-images** option to the command at runtime. The 
+**--quiet** command can be used in batch or shell scripts to keep the program from producing any output at runtime. 
 
 ## Installation Notes
 
