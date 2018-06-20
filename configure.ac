@@ -14,8 +14,8 @@ AC_PROG_CC
 # Checks for libraries.
 
 #LDFLAGS_LIBPNG="-lpng"
-CXXFLAGS_EXTRA="`pkg-config --cflags cairo`"
-LDFLAGS_EXTRA="`pkg-config --libs cairo`"
+CXXFLAGS_EXTRA="`pkg-config --cflags cairo` `pkg-config --cflags RNAlib2`"
+LDFLAGS_EXTRA="`pkg-config --libs cairo` `pkg-config --libs RNAlib2`"
 
 AC_SUBST(CXXFLAGS_EXTRA)
 AC_SUBST(LDFLAGS_EXTRA)

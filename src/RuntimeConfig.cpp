@@ -38,6 +38,9 @@ const char * RuntimeConfig_t::getBaseFilePathOption() const {
      return baseFilePath;
 }
 
+const char * RuntimeConfig_t::getBaseFilePathNoCTOption() const {
+     return baseFilePathNoCT;
+}
 bool RuntimeConfig_t::parseRuntimeArgs(int argc, char **argv) {
      
      if(argc < 2 || strlen(argv[1]) < 3)
@@ -72,11 +75,11 @@ bool RuntimeConfig_t::parseRuntimeArgs(int argc, char **argv) {
      return true;
 }
 
-char * RuntimeConfig_t::getBranchTypeOutputFile(BranchID_t bid) const { 
+char * RuntimeConfig_t::getBranchTypeOutputFile(BranchID_t bid, const char *fileExt = "ct") const { 
      if(bid == BRANCH_UNDEFINED)
           return NULL;
      char *outputFilePath = (char *) malloc(sizeof(char) * MAX_FILEPATH_LENGTH); 
-     snprintf(outputFilePath, MAX_FILEPATH_LENGTH, "%s-branch%02d.ct", baseFilePathNoCT, bid);
+     snprintf(outputFilePath, MAX_FILEPATH_LENGTH, "%s-branch%02d.%s", baseFilePathNoCT, bid, fileExt);
      return outputFilePath; 
 }
 

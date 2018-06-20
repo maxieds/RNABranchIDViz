@@ -13,6 +13,8 @@ using std::vector;
 #include "RuntimeConfig.h"
 #include "RNAStructure.h"
 
+#define PSPLOT_DIVIDER_STROKE_SIZE     (10)
+
 class Util {
 
      public:
@@ -20,7 +22,17 @@ class Util {
                                           RNAStructure::BaseData ** &bdArray, int *btSizes);
           static bool WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
                                        const RuntimeConfig_t &runtimeConfig);
-          static bool GenerateBranchDrawImages(const char *outputPrefix, DrawImageType_t drawSpec);
+          static bool WriteBranchDotBracketFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
+                                                 const RuntimeConfig_t &runtimeConfig);
+          static bool GenerateDomainPSPlot(const char *outputFile, RuntimeConfig_t runtimeConfig);
+
+
+     private:
+          static void writePSPlotHeaderInfo(FILE *fp);
+          static void writePSPlotDomainData(FILE *fp, const char *dotBracketSourceFile); 
+          static void writePSPlotActionData(FILE *fp); 
+          static void writePSPlotFooterInfo(FILE *fp);  
+
 }; 
 
 #endif 

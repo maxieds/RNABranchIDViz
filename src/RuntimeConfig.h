@@ -11,6 +11,14 @@
 
 #define MAX_FILEPATH_LENGTH      (256)
 
+typedef enum {
+     FLAT, 
+     FLAT_UNCIRCLED, 
+     CIRCLE, 
+     CIRCLE_UNCIRCLED,
+     DEFAULT
+} DrawImageType_t; 
+
 class RuntimeConfig_t {
 
      private:
@@ -29,9 +37,10 @@ class RuntimeConfig_t {
           bool getRenumberOption() const;
           bool getOutputImagesOption() const;
           const char * getBaseFilePathOption() const;
+          const char * getBaseFilePathNoCTOption() const;
 
           bool parseRuntimeArgs(int argc, char **argv); 
-          char * getBranchTypeOutputFile(BranchID_t bid) const;
+          char * getBranchTypeOutputFile(BranchID_t bid, const char *fileExt) const;
 
           static void PrintUsage(char *progName);
 

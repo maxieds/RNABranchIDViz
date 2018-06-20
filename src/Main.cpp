@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
      }
      Util::ParseBranchesByType(rnaStructBase, bdArray, bdSizes);
      Util::WriteBranchFiles(bdArray, bdSizes, runtimeOptions); 
+     Util::WriteBranchDotBracketFiles(bdArray, bdSizes, runtimeOptions); 
 
      if(runtimeOptions.getOutputImagesOption()) { 
           DiagramImage_t *rnaSVDiagramImage = new DiagramImage_t(rnaStructBase);
@@ -39,8 +40,9 @@ int main(int argc, char **argv) {
           snprintf(rsvImageOutFile, MAX_FILEPATH_LENGTH, "%s-RNAStructViz.png", runtimeOptions.getBaseFilePathNoCTOption());
           rnaSVDiagramImage->writePNGImage(rsvImageOutFile); 
           delete rnaSVDiagramImage;
-          // TODO: implement second visualization option
-          Util::GenerateBranchDrawImages("test.ps", DEFAULT);
+          char viennaPostscriptOutFile[MAX_FILEPATH_LENGTH];
+          snprintf(viennaPostscriptOutFile, MAX_FILEPATH_LENGTH, "%s-ViennaSubdomainPlot.ps",runtimeOptions.getBaseFilePathNoCTOption());
+          Util::GenerateDomainPSPlot(viennaPostscriptOutFile, runtimeOptions);
      } 
 
      free(rnaStructBase);
