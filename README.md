@@ -44,7 +44,23 @@ easily installed on modern Linux systems:
 ```
 $ sudo apt-get install libcairo2-dev
 ``` 
-Now we are all set to begin compiling the local utility!
+We will require the [ViennaRNA]https://www.tbi.univie.ac.at/RNA/() package to generate some of the diagrams in our utility. 
+Here is how we configure it:
+```
+$ cd ~
+$ wget https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_4_x/ViennaRNA-2.4.7.tar.gz
+$ tar xvzf ViennaRNA-2.4.7.tar.gz
+$ cd ViennaRNA-2.4.7
+$ ./configure
+$ make all
+$ sudo make install
+```
+Now test that the ViennaRNA library has been installed correctly:
+```
+$ pkg-config --cflags --lib RNAlib2
+-pthread -I/usr/local/include -I/usr/local/include/ViennaRNA -L/usr/local/lib -lRNA -fopenmp
+```
+If you obtain close to the output above, we are all set to begin compiling the local utility!
 
 ### Compiling from source on Linux (Debian-Variants)
 
