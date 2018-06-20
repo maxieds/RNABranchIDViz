@@ -79,7 +79,7 @@ If this step succeeds you can build the program with the following sequence of c
 ```
 $ ./configure
 $ make
-$ echo "alias RNABranchIDViz=\'~/RNABranchIDViz/src/RNABranchIDViz\'" >> ~/.bashrc
+$ echo "alias RNABranchIDViz=\'`readlink -f ~/RNABranchIDViz/src/RNABranchIDViz`\'" >> ~/.bashrc
 $ source ~/.bashrc
 $ RNABranchIDViz
 ``` 
