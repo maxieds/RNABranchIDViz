@@ -44,7 +44,7 @@ easily installed on modern Linux systems:
 ```
 $ sudo apt-get install libcairo2-dev
 ``` 
-We will require the [ViennaRNA]https://www.tbi.univie.ac.at/RNA/() package to generate some of the diagrams in our utility. 
+We will require the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) package to generate some of the diagrams in our utility. 
 Here is how we configure it:
 ```
 $ cd ~
