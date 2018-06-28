@@ -60,7 +60,7 @@ Now test that the ViennaRNA library has been installed correctly:
 $ pkg-config --cflags --libs RNAlib2
 -pthread -I/usr/local/include -I/usr/local/include/ViennaRNA -L/usr/local/lib -lRNA -fopenmp
 ```
-If you obtain close to the output above, we are all set to begin compiling the local utility!
+If you obtain **close** (*but not necessarily identical*) to the output above, we are all set to begin compiling the local utility!
 
 ### Compiling from source on Linux (Debian-Variants)
 
