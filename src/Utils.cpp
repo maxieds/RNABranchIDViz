@@ -29,7 +29,10 @@ extern "C" {
 
 #include "Utils.h"
 
-extern RNAStructure *rnaStructBaseOrig = NULL;
+// include file copied directly from ViennaRNA source:
+static unsigned char plotRNAPostscriptMacros[] = {
+     #include "ViennaRNA-static-postscript-structure_plot_macro_base.hex"
+};
 
 float Util::getDomainRed(BranchID_t bid) { 
      switch(bid) { 
@@ -138,7 +141,6 @@ void Util::ParseBranchesByType(RNAStructure * &rnaStructBase, RNAStructure::Base
                     break;
           }
      }
-     rnaStructBaseOrig = rnaStructBase;
 }
 
 bool Util::WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, const RuntimeConfig_t &runtimeConfig) {
@@ -295,87 +297,7 @@ void Util::writePSPlotHeaderInfo(FILE *fp) {
      fprintf(fp, "%% to switch off outline pairs of sequence comment or\n"
              "%% delete the appropriate line near the end of the file\n\n");
      fprintf(fp, "%%%%BeginProlog\n");
-     fprintf(fp, 
-     "/RNAplot 100 dict def\n"
-     "RNAplot begin\n"
-     "/fsize  14 def\n"
-     "%%/outlinecolor {0.2 setgray} bind def\n"
-     "%%/paircolor    {0.2 setgray} bind def\n"
-     "%%/seqcolor     {0   setgray} bind def'\n"
-     "/outlinecolor {} bind def\n"
-     "/paircolor    {} bind def\n"
-     "/seqcolor     {} bind def\n"
-     "/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def\n"
-     "/min { 2 copy gt { exch } if pop } bind def\n"
-     "/max { 2 copy lt { exch } if pop } bind def\n"
-     "/drawoutline {\n"
-     "   gsave outlinecolor newpath\n"
-     "   coor 0 get aload pop 0.8 0 360 arc %% draw 5' circle of 1st sequence\n"
-     "   currentdict /cutpoint known        %% check if cutpoint is defined\n"
-     "   {coor 0 cutpoint getinterval\n"
-     "   {aload pop lineto} forall         %% draw outline of 1st sequence\n"
-     "   coor cutpoint 1 add get aload pop\n"
-     "   2 copy moveto 0.8 0 360 arc       %% draw 5' circle of 2nd sequence\n"
-     "   coor cutpoint 1 add coor length cutpoint 1 add sub getinterval\n"
-     "   {aload pop lineto} forall}        %% draw outline of 2nd sequence\n"
-     "   {coor {aload pop lineto} forall}   %% draw outline as a whole\n"
-     "   ifelse\n"
-     "   stroke grestor\n"
-     "} bind def\n"
-     "/drawpairs {\n"
-     "   paircolor\n"
-     "   0.7 setlinewidth\n"
-     "   [9 3.01] 9 setdash\n"
-     "   newpath\n"
-     "   pairs {aload pop\n"
-     "       currentdict (cpr) known\n"
-     "       { exch dup\n"
-     "       coor  exch 1 sub get aload pop moveto\n"
-     "       exch arccoords curveto\n"
-     "       }\n"
-     "       { coor exch 1 sub get aload pop moveto\n"
-     "       coor exch 1 sub get aload pop lineto\n"
-     "       } ifelse\n"
-     "   } forall\n"
-     "   stroke\n"
-     "} bind def\n"
-     "%% draw bases\n"
-     "/drawbases {\n"
-     "   [] 0 setdash\n"
-     "   seqcolor\n"
-     "   0\n"
-     "   coor {\n"
-     "       aload pop moveto\n"
-     "       dup sequence exch 1 getinterval cshow\n"
-     "       1 add\n"
-     "   } forall\n"
-     "   pop\n"
-     "} bind def\n"
-     "/init {\n"
-     "   /Helvetica findfont fsize scalefont setfont\n"
-     "   1 setlinejoin\n"
-     "   1 setlinecap\n"
-     "   0.8 setlinewidth\n"
-     "   %% find the coordinate range\n"
-     "   /xmax -1000 def /xmin 10000 def\n"
-     "   /ymax -1000 def /ymin 10000 def\n"
-     "   coor {\n"
-     "      aload pop\n"
-     "      dup ymin lt {dup /ymin exch def} if\n"
-     "      dup ymax gt {/ymax exch def} {pop} ifelse\n"
-     "      dup xmin lt {dup /xmin exch def} if\n"
-     "      dup xmax gt {/xmax exch def} {pop} ifelse\n"
-     "   } forall\n"
-     "   /size {xmax xmin sub ymax ymin sub max} bind def\n"
-     "   /width {xmax xmin sub} bind def\n"
-     "   /height {ymax ymin sub} bind def\n"
-     "   10 10 translate\n"
-     "   680 size 10 add div dup scale\n"
-     "   size width sub width xmin sub xmax sub add 2 div 5 add\n"
-     "   size height sub height ymin sub ymax sub add 2 div 5 add\n"
-     "   translate\n"
-     "} bind def\n"
-     "end\n");
+     fprintf(fp, "%s", plotRNAPostscriptMacros); 
      fprintf(fp, "%%%%EndProlog\n");
      fprintf(fp, "RNAplot begin\n"
              "%% data start here\n");
