@@ -42,7 +42,8 @@ int main(int argc, char **argv) {
           rnaSVDiagramImage->writePNGImage(rsvImageOutFile); 
           delete rnaSVDiagramImage;
           //char viennaPostscriptOutFile[MAX_FILEPATH_LENGTH];
-          //snprintf(viennaPostscriptOutFile, MAX_FILEPATH_LENGTH, "%s-ViennaSubdomainPlot.ps",runtimeOptions.getBaseFilePathNoCTOption());
+          //snprintf(viennaPostscriptOutFile, MAX_FILEPATH_LENGTH, "%s-ViennaSubdomainPlot.ps", 
+          //         runtimeOptions.getBaseFilePathNoCTOption());
           //Util::GenerateDomainPSPlot(viennaPostscriptOutFile, runtimeOptions);
      } 
 
