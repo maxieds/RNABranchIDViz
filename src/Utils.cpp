@@ -170,11 +170,6 @@ bool Util::WriteBranchFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, co
           // write pair information: 
           for(int bd = 0; bd < bdSizes[bt]; bd++) { 
                int curIndex = runtimeConfig.getRenumberOption() ? bd + 1 : bdArray[bt][bd].m_index; 
-               if(bt == 0 && bd == 0) {
-               fprintf(stderr, "bt=%d; bd=%d; m_pair=%d; m_index=%d\n", bt, bd, bdArray[bt][bd].m_pair, bdArray[bt][bd].m_index);
-               fprintf(stderr, "bt=%d; bd=%d; m_pair=%d; m_index=%d; BTYPE=%d\n", bt, bd, rnaStructBaseOrig->GetBaseAt(783)->m_pair, rnaStructBaseOrig->GetBaseAt(783)->m_index, rnaStructBaseOrig->GetBranchTypeAt(783)->getBranchID());
-               fprintf(stderr, "bt=%d; bd=%d; m_pair=%d; m_index=%d; BTYPE=%d\n", bt, bd, rnaStructBaseOrig->GetBaseAt(756)->m_pair, rnaStructBaseOrig->GetBaseAt(756)->m_index, rnaStructBaseOrig->GetBranchTypeAt(756)->getBranchID());}
-
                int pairIndex = runtimeConfig.getRenumberOption() ? bdPairingsMap.at(bdArray[bt][bd].m_pair) : \
                                bdArray[bt][bd].m_pair; 
                const char *newline = (bd + 1 == bdSizes[bt]) ? "" : "\n";

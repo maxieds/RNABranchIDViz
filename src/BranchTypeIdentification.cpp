@@ -158,18 +158,14 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
           rnaStructBase->GetBranchTypeAt(enclosingArcsNubbins[n]->m_index)->setBranchParent(enclosingArcs[(int) (nubbinBranchIDs[n] - 1)]);
           rnaStructBase->GetBranchTypeAt(enclosingArcsNubbins[n]->m_pair)->setBranchID(nubbinBranchIDs[n]);
           rnaStructBase->GetBranchTypeAt(enclosingArcsNubbins[n]->m_pair)->setBranchParent(enclosingArcs[(int) (nubbinBranchIDs[n] - 1)]);
-          if(enclosingArcsNubbins[n]->m_index == 783) fprintf(stderr, "[1] : %d\n", nubbinBranchIDs[n]);
           for(int b = 0; b < alength; b++) {
                RNAStructure::BaseData *curBase = rnaStructBase->GetBaseAt(b);
-               //if(curBase->m_index == enclosingArcsNubbins[n]->m_index && curBase->m_pair == enclosingArcsNubbins[n]->m_pair)
-               //     continue;
                if(curBase->isContainedIn(*(enclosingArcsNubbins[n])) || 
                   curBase->m_pair == RNAStructure::UNPAIRED && 
                   curBase->m_index < MAX(enclosingArcsNubbins[n]->m_index, enclosingArcsNubbins[n]->m_pair) && 
                   curBase->m_index > MIN(enclosingArcsNubbins[n]->m_index, enclosingArcsNubbins[n]->m_pair)) {
                     rnaStructBase->GetBranchTypeAt(b)->setBranchID(nubbinBranchIDs[n]);
                     rnaStructBase->GetBranchTypeAt(b)->setBranchParent(enclosingArcs[(int) (nubbinBranchIDs[n] - 1)]);
-                    if(rnaStructBase->GetBaseAt(b)->m_index == 783) fprintf(stderr, "[2] : BT Set To = %d\n", nubbinBranchIDs[n]);
                }
           }
      }
@@ -179,7 +175,6 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
           rnaStructBase->GetBranchTypeAt(enclosingArcs[k]->m_index)->setBranchParent(enclosingArcs[k]);
           rnaStructBase->GetBranchTypeAt(enclosingArcs[k]->m_pair)->setBranchID((BranchID_t) (k + 1));
           rnaStructBase->GetBranchTypeAt(enclosingArcs[k]->m_pair)->setBranchParent(enclosingArcs[k]);
-          if(enclosingArcs[k]->m_index == 783 || enclosingArcs[k]->m_pair == 783) fprintf(stderr, "[3] : \n");
           for(int b = 0; b < alength; b++) {
                RNAStructure::BaseData *curBase = rnaStructBase->GetBaseAt(b);
                if(curBase->isContainedIn(*(enclosingArcs[k])) || 
@@ -187,7 +182,6 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
                   curBase->m_index > MIN(enclosingArcs[k]->m_index, enclosingArcs[k]->m_pair))) {
                     rnaStructBase->GetBranchTypeAt(b)->setBranchID((BranchID_t) (k + 1));
                     rnaStructBase->GetBranchTypeAt(b)->setBranchParent(enclosingArcs[k]);
-                    if(rnaStructBase->GetBaseAt(b)->m_index == 783) fprintf(stderr, "[4] :\n");
                }
           }
      }
@@ -201,14 +195,12 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
                   curUnpaired->m_index == enclosingArcs[b]->m_pair && curUnpaired->m_pair == enclosingArcs[b]->m_index) { 
                     rnaStructBase->GetBranchTypeAt(v)->setBranchID((BranchID_t) (b + 1));
                     rnaStructBase->GetBranchTypeAt(v)->setBranchParent(enclosingArcs[b]);
-                    if(rnaStructBase->GetBaseAt(v)->m_index == 783) fprintf(stderr, "[5]\n");
                } 
                else if(curUnpaired->m_pair == RNAStructure::UNPAIRED &&
                   curUnpaired->m_index > MAX(enclosingArcs[b]->m_pair, enclosingArcs[b]->m_index) && (b == 3 ||  
                   curUnpaired->m_index < MIN(enclosingArcs[b + 1]->m_pair, enclosingArcs[b + 1]->m_index))) { // we want the unpaired bases between branches <- : 
                     unpairedBetweenBranchCount++;
                     unpairedBetweenVec.push_back(curUnpaired);
-                    if(curUnpaired->m_index == 783) fprintf(stderr, "[6] : b=%d, v=%d\n", b, v);
                }
           }
           for(int up = 0; up < unpairedBetweenVec.size(); up++) { 
@@ -233,15 +225,6 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
                rnaStructBase->GetBranchTypeAt(up)->setBranchID(BRANCH1);
                rnaStructBase->GetBranchTypeAt(up)->setBranchParent(enclosingArcs[0]);
           }
-     }
-
-
-     for(int v = 0; v < enclosingArcs.size(); v++) { 
-          fprintf(stderr, "ENCLOSING ARC: m_index = %d; m_pair = %d; dist = %d; BT=%d, %d\n", enclosingArcs[v]->m_index, enclosingArcs[v]->m_pair, enclosingArcs[v]->getPairDistance(), rnaStructBase->GetBranchTypeAt(enclosingArcs[v]->m_index - 1)->getBranchID(), rnaStructBase->GetBranchTypeAt(enclosingArcs[v]->m_pair - 1)->getBranchID());
-     }
-     for(int v = 0; v < alength; v++) { 
-          RNAStructure::BaseData *curBase = rnaStructBase->GetBaseAt(v);
-          fprintf(stderr, "index=%d, pair=%d; BT=%d\n", curBase->m_index, curBase->m_pair, rnaStructBase->GetBranchTypeAt(v)->getBranchID());
      }
      return true;
 } 
