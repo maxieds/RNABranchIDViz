@@ -68,7 +68,7 @@ class RNABranchType_t {
 
           static void SetBranchColor(cairo_t * &cr, BranchID_t bt);
 
-          static bool PerformBranchClassification(class RNAStructure *rnaStructArray, unsigned int alength);
+          static bool PerformBranchClassification(class RNAStructure * &rnaStructArray, unsigned int alength);
 
      protected:
           BranchID_t branchID;

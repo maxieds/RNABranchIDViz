@@ -15,6 +15,24 @@ RNAStructure::RNAStructure()
      branchType = NULL; //new RNABranchType_t(BRANCH_UNDEFINED, NULL);
 }
 
+RNAStructure::RNAStructure(const RNAStructure &rnaStruct) { 
+     copyRNAStructure(rnaStruct);
+}
+
+RNAStructure & RNAStructure::operator=(const RNAStructure &rhs) { 
+     if(this != &rhs) {
+          copyRNAStructure(rhs);
+     }
+     return *this;
+}
+
+void RNAStructure::copyRNAStructure(const RNAStructure &rnaStruct) { 
+     // free the memory in the existing object:
+     //if(branchType != NULL)
+     //     delete branchType;
+     fprintf(stderr, "TODO: NOT YET IMPLEMENTED!!\n");
+}
+
 RNAStructure::~RNAStructure()
 {
 
@@ -40,20 +58,21 @@ RNAStructure::BaseData* RNAStructure::GetBaseAt(unsigned int position)
 {
     if (position < m_sequenceLength)
     {
-		return m_sequence + position;
+	//return m_sequence + position;
+        return &m_sequence[position];
     }
     fprintf(stderr, "in GetBaseAt: m_sequenceLength=%d, position=%d\n", m_sequenceLength, position);
     return NULL;
 }
 
-RNABranchType_t & RNAStructure::GetBranchTypeAt(unsigned int position)
+RNABranchType_t* RNAStructure::GetBranchTypeAt(unsigned int position)
 {
     if (position < m_sequenceLength)
     {
-		return *(branchType + position);
+	//return branchType + position;
+        return &branchType[position];
     }
-    RNABranchType_t NULL_BranchType(BRANCH_UNDEFINED, NULL);
-    return NULL_BranchType;
+    return NULL;
 }
 
 RNAStructure* RNAStructure::CreateFromFile(const char* filename, 

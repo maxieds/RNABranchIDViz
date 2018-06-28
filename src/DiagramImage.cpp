@@ -67,7 +67,7 @@ void DiagramImage_t::drawBuffers() {
     for(unsigned int ui = 0; ui < numBases; ++ui) {
         const RNAStructure::BaseData* baseData1 = rnaStruct->GetBaseAt(ui);
 	if (baseData1->m_pair != RNAStructure::UNPAIRED && baseData1->m_pair > ui) {
-             RNABranchType_t::SetBranchColor(crDraw, rnaStruct->GetBranchTypeAt(ui).getBranchID());
+             RNABranchType_t::SetBranchColor(crDraw, rnaStruct->GetBranchTypeAt(ui)->getBranchID());
              DrawArc2(ui, baseData1->m_pair, centerX, centerY, angleBase, angleDelta, radius);
 	     counter++;
         }

@@ -13,7 +13,7 @@
 #include "RuntimeConfig.h"
 #include "BranchTypeIdentification.h"
 
-RuntimeConfig_t::RuntimeConfig_t() : quiet(false), debug(false), outputImages(true), renumberCTIndices(true) {
+RuntimeConfig_t::RuntimeConfig_t() : quiet(0), debug(0), outputImages(1), renumberCTIndices(1) {
      baseFilePath[0] = '\0';
      baseFilePathNoCT[0] = '\0';
 } 
@@ -49,7 +49,7 @@ bool RuntimeConfig_t::parseRuntimeArgs(int argc, char **argv) {
      strncpy(baseFilePathNoCT, argv[1], MAX_FILEPATH_LENGTH);
      baseFilePathNoCT[strlen(argv[1]) - 3] = '\0';
      argc = argc - 2;
-     argv = argv + 2;
+     argv = &argv[2];
 
      static struct option longOptions[] = {
           {"quiet", no_argument, (int *) &quiet, 1}, 

@@ -22,10 +22,10 @@ typedef enum {
 class RuntimeConfig_t {
 
      private:
-          bool quiet;
-          bool debug;
-          bool renumberCTIndices;
-          bool outputImages;
+          int quiet;
+          int debug;
+          int renumberCTIndices;
+          int outputImages;
           char baseFilePath[MAX_FILEPATH_LENGTH];
           char baseFilePathNoCT[MAX_FILEPATH_LENGTH];
 

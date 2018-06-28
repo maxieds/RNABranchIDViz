@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <vector>
 
+class RNABranchType_t;
+
 #define MAX(x, y)         (x <= y ? y : x)
 #define MIN(x, y)         (x <= y ? x : y)
 #define ABS(x)            (x >= 0 ? x : -1 * x)
@@ -74,7 +76,7 @@ public:
             unsigned int parentIndexMin = MIN(parentStruct.m_index, parentStruct.m_pair);
             unsigned int parentIndexMax = MAX(parentStruct.m_index, parentStruct.m_pair);
             if(parentStruct.m_pair == UNPAIRED)
-                return false;
+                return false; //return m_index >= parentIndexMin && m_index <= parentIndexMax;
             else if(localIndexMax > parentIndexMax || localIndexMin < parentIndexMin)
                 return false;
             else if(localIndexMin >= parentIndexMin && localIndexMax <= parentIndexMax)
@@ -109,7 +111,12 @@ public:
 	Return the base at a given location. Indexed starting at 0.
     */
     BaseData* GetBaseAt(unsigned int position);
-    RNABranchType_t & GetBranchTypeAt(unsigned int position); 
+    RNABranchType_t* GetBranchTypeAt(unsigned int position); 
+    //inline void SetBranchTypeAt(unsigned int position, class RNABranchType_t btValue) { 
+    //    if(position < m_sequenceLength) {  
+    //         *(branchType + position) = btValue;
+    //    }
+    //} 
 
     /*
 	Return the number of bases in the sequence.
@@ -162,6 +169,10 @@ private:
 	Constructor is private to force use of Create methods.
     */
     RNAStructure();
+    RNAStructure(const RNAStructure &rnaStruct);
+    RNAStructure & operator=(const RNAStructure &rhs);
+
+    void copyRNAStructure(const RNAStructure &rnaStruct);
 
     /*
 	Generate the string used for text display of the structure.
