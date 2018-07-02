@@ -85,3 +85,35 @@ $ RNABranchIDViz
 ``` 
 If all goes well in the above compilation steps, you now have a working binary for the 
 utility built and ready to use at your terminal the next time you login!
+
+## Usage and comparison with the sample outputs
+
+As mentioned above, the commandline usage string for the application is as follows: 
+```
+Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]
+```
+In other words, the application takes a single parameter 
+(the path of a file in [CT format](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT)) (say ``file.ct```) 
+followed by zero or more zero-argument configuration options (i.e., appending ``--quiet`` to the command at runtime) and 
+outputs the following set of files:
+1. ``file-branch0x.ct`` for x = 1,2,3,4: The corresponding CT files for the identified subbranches, or four 
+   component domains of the ``d.16.*`` structure; 
+2. ``file-branch0x.dot`` for x = 1,2,3,4: The 
+[DOT Bracket formatted files](https://rna.urmc.rochester.edu/Text/File_Formats.html#DotBracket) 
+for the identified four subdomains of the structure; 
+3. ``file.dot``: The [DOT Bracket formatted file](https://rna.urmc.rochester.edu/Text/File_Formats.html#DotBracket) for the 
+original full structure; and 
+4. ``file-RNAStructViz.png``: A color-coded circular diagram of the pairs in the CT file and their corresponding 
+highlighted branches. 
+
+In the ``sample-output/*`` directory included with the source distribution of the application, we have included 
+a set of sample output files corresponding to the ``d.16.e.E.cuniculi_nop.ct`` structure (a standard and often cited 
+favorite D16 structure example). Users may compare their output by running the following commands used to generate the 
+sample output files: 
+```
+$ mkdir -p ~/sample-output-test
+$ cd ~/sample-output-test
+$ cp ~/RNABranchIDViz/sample-output/d.16.e.E.cuniculi_nop.ct ./
+$ RNABranchIDVizBinary d.16.e.E.cuniculi_nop.ct
+```
+This should get users up and running with the syntax and usage of our application! 
