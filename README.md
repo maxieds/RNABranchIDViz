@@ -93,7 +93,7 @@ As mentioned above, the commandline usage string for the application is as follo
 Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]
 ```
 In other words, the application takes a single parameter 
-(the path of a file in [CT format](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT)) (say ``file.ct```) 
+(the path of a file in [CT format](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT)) (say ``file.ct``) 
 followed by zero or more zero-argument configuration options (i.e., appending ``--quiet`` to the command at runtime) and 
 outputs the following set of files:
 1. ``file-branch0x.ct`` for x = 1,2,3,4: The corresponding CT files for the identified subbranches, or four 
