@@ -12,7 +12,7 @@ branch structures of an organism specified by an input
 [CT file](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT). 
 The usage of the program is as follows: 
 ```
-Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]
+Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--output-fasta] [--no-renumber-CT] [--no-images]
 ```
 Most of the options specified above are self explanatory. By default, the utility identifies the four 
 branches in the input CT file (first argument above) and then outputs re-numbered CT files for each 
@@ -83,7 +83,7 @@ utility built and ready to use at your terminal the next time you login!
 
 As mentioned above, the commandline usage string for the application is as follows: 
 ```
-Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]
+Usage: RNABranchIDViz CTFileName [--quiet] [--debug] [--output-fasta] [--no-renumber-CT] [--no-images]
 ```
 In other words, the application takes a single parameter 
 (the path of a file in [CT format](https://rna.urmc.rochester.edu/Text/File_Formats.html#CT)) (say ``file.ct``) 
