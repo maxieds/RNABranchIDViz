@@ -30,7 +30,7 @@ extern "C" {
 #include "Utils.h"
 
 // include file copied directly from ViennaRNA source:
-static unsigned char plotRNAPostscriptMacros[] = {
+static const char plotRNAPostscriptMacros[] = {
      #include "ViennaRNA-static-postscript-structure_plot_macro_base.hex"
 };
 
@@ -257,6 +257,32 @@ bool Util::WriteBranchDotBracketFiles(RNAStructure::BaseData ** &bdArray, int *b
      return true;
 }
 
+bool Util::WriteBranchFASTAFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
+                                 const RuntimeConfig_t &runtimeConfig) {
+     for(int bt = 0; bt < NUM_BRANCHES; bt++) { 
+          // write file header information: 
+          char *branchOutputFile = runtimeConfig.getBranchTypeOutputFile((BranchID_t) (bt + 1), "fasta");
+          FILE *btfp = fopen(branchOutputFile, "w+"); 
+          if(!btfp) {
+               perror("fopen"); 
+               free(branchOutputFile);
+               return false;
+          }
+          char writeBuf[MAX_FILEPATH_LENGTH];
+          snprintf(writeBuf, MAX_FILEPATH_LENGTH, "> Filename: %s\n", branchOutputFile); 
+          fwrite(writeBuf, sizeof(char), strlen(writeBuf), btfp); 
+          // write pair information: 
+          for(int bd = 0; bd < bdSizes[bt]; bd++) { 
+               const char *newline = (bd + 1 == bdSizes[bt]) ? "\n" : "";
+               snprintf(writeBuf, MAX_FILEPATH_LENGTH, "%c%s", bdArray[bt][bd].getBaseChar(), newline);
+               fwrite(writeBuf, sizeof(char), strlen(writeBuf), btfp); 
+          }
+          fclose(btfp);
+          free(branchOutputFile); 
+     } 
+     return true;
+}
+
 bool Util::GenerateDomainPSPlot(const char *outputFile, RuntimeConfig_t runtimeConfig) {
      FILE *outfp = fopen(outputFile, "w+"); 
      if(!outfp) { 
@@ -294,12 +320,14 @@ void Util::writePSPlotHeaderInfo(FILE *fp) {
              "%%%%DocumentFonts: Helvetica\n"
              "%%%%Pages: 1\n"
              "%%%%EndComments\n\n", 2 * 700 + PSPLOT_DIVIDER_STROKE_SIZE, 2 * 700 + PSPLOT_DIVIDER_STROKE_SIZE);
-     fprintf(fp, "%% to switch off outline pairs of sequence comment or\n"
+     fprintf(fp, 
+             "%% to switch off outline pairs of sequence comment or\n"
              "%% delete the appropriate line near the end of the file\n\n");
-     fprintf(fp, "%%%%BeginProlog\n");
-     fprintf(fp, "%s", plotRNAPostscriptMacros); 
-     fprintf(fp, "%%%%EndProlog\n");
-     fprintf(fp, "RNAplot begin\n"
+     fprintf(fp, "%%%%BeginProlog\n\n");
+     fprintf(fp, "%s\n", plotRNAPostscriptMacros); 
+     fprintf(fp, "%%%%EndProlog\n\n");
+     fprintf(fp, 
+             //"RNAplot begin\n"
              "%% data start here\n");
 } 
 
@@ -361,8 +389,8 @@ void Util::writePSPlotDomainData(FILE *xyplot, const char *dotBracketSourceFile)
   X = (float *) vrna_alloc((length+1)*sizeof(float));
   Y = (float *) vrna_alloc((length+1)*sizeof(float));
   i = naview_xy_coordinates(pair_table_g, X, Y);
-  //if(i!=length)
-  //  fprintf(stderr, "Warning: strange things happening in PS_rna_plot...");
+  if(i!=length)
+    fprintf(stderr, "Warning: strange things happening in PS_rna_plot...");
 
   xmin = xmax = X[0];
   ymin = ymax = Y[0];

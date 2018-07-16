@@ -11,14 +11,6 @@
 
 #define MAX_FILEPATH_LENGTH      (256)
 
-typedef enum {
-     FLAT, 
-     FLAT_UNCIRCLED, 
-     CIRCLE, 
-     CIRCLE_UNCIRCLED,
-     DEFAULT
-} DrawImageType_t; 
-
 class RuntimeConfig_t {
 
      private:
@@ -26,16 +18,18 @@ class RuntimeConfig_t {
           int debug;
           int renumberCTIndices;
           int outputImages;
+          int outputFasta;
           char baseFilePath[MAX_FILEPATH_LENGTH];
           char baseFilePathNoCT[MAX_FILEPATH_LENGTH];
 
      public:
           RuntimeConfig_t();
           
-          bool getQuietOption() const;
-          bool getDebugOption() const;
-          bool getRenumberOption() const;
-          bool getOutputImagesOption() const;
+          int getQuietOption() const;
+          int getDebugOption() const;
+          int getOutputFASTAOption() const;
+          int getRenumberOption() const;
+          int getOutputImagesOption() const;
           const char * getBaseFilePathOption() const;
           const char * getBaseFilePathNoCTOption() const;
 

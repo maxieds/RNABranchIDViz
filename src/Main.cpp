@@ -34,6 +34,9 @@ int main(int argc, char **argv) {
      Util::WriteBranchFiles(bdArray, bdSizes, runtimeOptions); 
      Util::WriteBranchDotBracketFiles(bdArray, bdSizes, runtimeOptions); 
      Util::WriteFullDotBracketFile(rnaStructBase, runtimeOptions); 
+     if(runtimeOptions.getOutputFASTAOption()) {
+          Util::WriteBranchFASTAFiles(bdArray, bdSizes, runtimeOptions);
+     }
 
      if(runtimeOptions.getOutputImagesOption()) { 
           DiagramImage_t *rnaSVDiagramImage = new DiagramImage_t(rnaStructBase);

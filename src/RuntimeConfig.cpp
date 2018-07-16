@@ -13,24 +13,29 @@
 #include "RuntimeConfig.h"
 #include "BranchTypeIdentification.h"
 
-RuntimeConfig_t::RuntimeConfig_t() : quiet(0), debug(0), outputImages(1), renumberCTIndices(1) {
+RuntimeConfig_t::RuntimeConfig_t() : quiet(0), debug(0), outputImages(1), 
+     outputFasta(0), renumberCTIndices(1) {
      baseFilePath[0] = '\0';
      baseFilePathNoCT[0] = '\0';
 } 
 
-bool RuntimeConfig_t::getQuietOption() const {
+int RuntimeConfig_t::getQuietOption() const {
      return quiet;
 } 
 
-bool RuntimeConfig_t::getDebugOption() const {
+int RuntimeConfig_t::getDebugOption() const {
      return debug;
 } 
 
-bool RuntimeConfig_t::getRenumberOption() const {
+int RuntimeConfig_t::getOutputFASTAOption() const {
+     return outputFasta;
+}
+
+int RuntimeConfig_t::getRenumberOption() const {
      return renumberCTIndices;
 } 
 
-bool RuntimeConfig_t::getOutputImagesOption() const {
+int RuntimeConfig_t::getOutputImagesOption() const {
      return outputImages;
 }
 
@@ -48,12 +53,14 @@ bool RuntimeConfig_t::parseRuntimeArgs(int argc, char **argv) {
      strncpy(baseFilePath, argv[1], MAX_FILEPATH_LENGTH);      
      strncpy(baseFilePathNoCT, argv[1], MAX_FILEPATH_LENGTH);
      baseFilePathNoCT[strlen(argv[1]) - 3] = '\0';
-     argc = argc - 2;
-     argv = &argv[2];
+     argc = argc - 1;
+     argv[1] = argv[0];
+     argv = &argv[1];
 
      static struct option longOptions[] = {
           {"quiet", no_argument, (int *) &quiet, 1}, 
           {"debug", no_argument, (int *) &debug, 1}, 
+          {"output-fasta", no_argument, (int *) &outputFasta, 1}, 
           {"no-renumber-CT", no_argument, (int *) &renumberCTIndices, 0}, 
           {"no-images", no_argument, (int *) &outputImages, 0}, 
           {0, 0, 0, 0}
@@ -84,7 +91,7 @@ char * RuntimeConfig_t::getBranchTypeOutputFile(BranchID_t bid, const char *file
 }
 
 void RuntimeConfig_t::PrintUsage(char *progName) {
-     fprintf(stderr, "Usage: %s CTFileName [--quiet] [--debug] [--no-renumber-CT] [--no-images]\n", progName);
+     fprintf(stderr, "Usage: %s CTFileName [--quiet] [--debug] [--output-fasta] [--no-renumber-CT] [--no-images]\n", progName);
 } 
 
 

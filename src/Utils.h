@@ -32,6 +32,8 @@ class Util {
           static bool WriteFullDotBracketFile(RNAStructure *rnaStructBase, RuntimeConfig_t runtimeConfig); 
           static bool WriteBranchDotBracketFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
                                                  const RuntimeConfig_t &runtimeConfig);
+          static bool WriteBranchFASTAFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
+                                            const RuntimeConfig_t &runtimeConfig); 
           static bool GenerateDomainPSPlot(const char *outputFile, RuntimeConfig_t runtimeConfig);
 
 
