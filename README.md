@@ -44,23 +44,16 @@ easily installed on modern Linux systems:
 ```
 $ sudo apt-get install libcairo2-dev
 ``` 
-We will require the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) package to generate some of the diagrams in our utility. 
-Here is how we configure it:
+To build **WITHOUT Cairo support**, there is now an option that can be added to ``$ ./configure`` in the 
+next section that will build the utility *WITHOUT* Cairo drawing support: replace that line with the 
+following:
 ```
-$ cd ~
-$ wget https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_4_x/ViennaRNA-2.4.7.tar.gz
-$ tar xvzf ViennaRNA-2.4.7.tar.gz
-$ cd ViennaRNA-2.4.7
-$ ./configure
-$ make all
-$ sudo make install
+$ ./configure --disable-cairo
 ```
-Now test that the ViennaRNA library has been installed correctly:
-```
-$ pkg-config --cflags --libs RNAlib2
--pthread -I/usr/local/include -I/usr/local/include/ViennaRNA -L/usr/local/lib -lRNA -fopenmp
-```
-If you obtain **close** (*but not necessarily identical*) to the output above, we are all set to begin compiling the local utility!
+Note that if Cairo support is disabled at build time then the utility will be unable to generate the 
+output PNG images drawing the distinct branch structures of 16S-type domains! Disable Cairo with care. 
+However, this option *will* allow the user to build the utility without having the Cairo 
+drawing library files installed on their local machine. 
 
 ### Compiling from source on Linux (Debian-Variants)
 
