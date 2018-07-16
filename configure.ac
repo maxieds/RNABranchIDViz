@@ -11,11 +11,23 @@ AC_CONFIG_HEADERS([rnabranchidviz_config.h])
 AC_PROG_CXX
 AC_PROG_CC
 
+AC_ARG_ENABLE(cairo,
+              AC_HELP_STRING([--enable-cairo],
+                             [build with Cairo drawing lib support]),
+              [AS_CASE("${enableval}",
+                       [yes], [enablecairo=1],
+                       [no],  [enablecairo=0],
+                       [AC_MSG_ERROR(bad value ${enableval} for --enable-cairo)])],
+              [enablecairo=1])
+
 # Checks for libraries.
 
-#LDFLAGS_LIBPNG="-lpng"
-CXXFLAGS_EXTRA="`pkg-config --cflags cairo` `pkg-config --cflags RNAlib2`"
-LDFLAGS_EXTRA="`pkg-config --libs cairo` `pkg-config --libs RNAlib2`"
+CXXFLAGS_EXTRA=""
+LDFLAGS_EXTRA=""
+
+AS_IF([test "$enablecairo" == "1"], [AC_DEFINE([WITH_CAIRO_SUPPORT], [1], [We are including support for Cairo!])])
+AS_IF([test "$enablecairo" == "1"], [CXXFLAGS_EXTRA+="`pkg-config --cflags cairo` -DWITH_CAIRO_SUPPORT"])
+AS_IF([test "$enablecairo" == "1"], [LDFLAGS_EXTRA+="`pkg-config --libs cairo`"])
 
 AC_SUBST(CXXFLAGS_EXTRA)
 AC_SUBST(LDFLAGS_EXTRA)

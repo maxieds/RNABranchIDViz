@@ -8,6 +8,7 @@
 #ifndef __DIAGRAM_IMAGE_H__
 #define __DIAGRAM_IMAGE_H__
 
+#ifdef WITH_CAIRO_SUPPORT
 #include <cairo.h>
 
 #include "RNAStructure.h"
@@ -77,5 +78,6 @@ class DiagramImage_t {
 		float& radius);
 
 }; 
+#endif
 
 #endif

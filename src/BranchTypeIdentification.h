@@ -8,7 +8,9 @@
 #ifndef __RNABRANCHTYPEIDENT_H__
 #define __RNABRANCHTYPEIDENT_H__
 
+#ifdef WITH_CAIRO_SUPPORT
 #include <cairo.h>
+#endif
 
 #include "RNAStructure.h" 
 
@@ -66,7 +68,9 @@ class RNABranchType_t {
           const RNAStructure::BaseData* getBranchParent() const;
           void setBranchParent(class RNAStructure::BaseData* bparent); 
 
+          #ifdef WITH_CAIRO_SUPPORT
           static void SetBranchColor(cairo_t * &cr, BranchID_t bt);
+          #endif
 
           static bool PerformBranchClassification(class RNAStructure * &rnaStructArray, unsigned int alength);
 

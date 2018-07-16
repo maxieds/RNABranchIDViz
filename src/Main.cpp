@@ -38,17 +38,16 @@ int main(int argc, char **argv) {
           Util::WriteBranchFASTAFiles(bdArray, bdSizes, runtimeOptions);
      }
 
+     #ifdef WITH_CAIRO_SUPPORT
      if(runtimeOptions.getOutputImagesOption()) { 
           DiagramImage_t *rnaSVDiagramImage = new DiagramImage_t(rnaStructBase);
           char rsvImageOutFile[MAX_FILEPATH_LENGTH]; 
-          snprintf(rsvImageOutFile, MAX_FILEPATH_LENGTH, "%s-RNAStructViz.png", runtimeOptions.getBaseFilePathNoCTOption());
+          snprintf(rsvImageOutFile, MAX_FILEPATH_LENGTH, "%s-RNAStructViz.png", 
+                   runtimeOptions.getBaseFilePathNoCTOption());
           rnaSVDiagramImage->writePNGImage(rsvImageOutFile); 
           delete rnaSVDiagramImage;
-          //char viennaPostscriptOutFile[MAX_FILEPATH_LENGTH];
-          //snprintf(viennaPostscriptOutFile, MAX_FILEPATH_LENGTH, "%s-ViennaSubdomainPlot.ps", 
-          //         runtimeOptions.getBaseFilePathNoCTOption());
-          //Util::GenerateDomainPSPlot(viennaPostscriptOutFile, runtimeOptions);
-     } 
+     }
+     #endif
 
      free(rnaStructBase);
      free(bdSizes); 

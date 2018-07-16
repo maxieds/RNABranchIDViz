@@ -34,14 +34,6 @@ class Util {
                                                  const RuntimeConfig_t &runtimeConfig);
           static bool WriteBranchFASTAFiles(RNAStructure::BaseData ** &bdArray, int *bdSizes, 
                                             const RuntimeConfig_t &runtimeConfig); 
-          static bool GenerateDomainPSPlot(const char *outputFile, RuntimeConfig_t runtimeConfig);
-
-
-     private:
-          static void writePSPlotHeaderInfo(FILE *fp);
-          static void writePSPlotDomainData(FILE *fp, const char *dotBracketSourceFile); 
-          static void writePSPlotActionData(FILE *fp); 
-          static void writePSPlotFooterInfo(FILE *fp);  
 
      public:
           typedef struct {

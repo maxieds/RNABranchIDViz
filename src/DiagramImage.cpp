@@ -11,6 +11,8 @@
 #include "BranchTypeIdentification.h"
 #include "Utils.h"
 
+#ifdef WITH_CAIRO_SUPPORT
+
 DiagramImage_t::DiagramImage_t(RNAStructure *rnaStructBase) : 
      rnaStruct(rnaStructBase), bufferDrawn(false) , numPairs(0) {
      if (rnaStruct->GetLength() > 1000) {
@@ -199,3 +201,4 @@ void DiagramImage_t::ComputeDiagramParams(
     radius = centerX < centerY ? centerX - 15.f : centerY - 15.f;
 }
 
+#endif

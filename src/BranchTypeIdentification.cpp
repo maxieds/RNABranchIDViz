@@ -49,6 +49,7 @@ void RNABranchType_t::setBranchParent(class RNAStructure::BaseData* bparent) {
      branchParent = bparent;
 }
 
+#ifdef WITH_CAIRO_SUPPORT
 void RNABranchType_t::SetBranchColor(cairo_t * &cr, BranchID_t bt) {
      switch(bt) {
           case BRANCH_UNDEFINED:
@@ -70,6 +71,7 @@ void RNABranchType_t::SetBranchColor(cairo_t * &cr, BranchID_t bt) {
                break;
      }
 }
+#endif
 
 bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStructBase, unsigned int alength) {
 
@@ -144,11 +146,11 @@ bool RNABranchType_t::PerformBranchClassification(class RNAStructure * &rnaStruc
      // we reset the branch types by number on all (except for the nubbins, 
      // see below) entries in the array: 
      vector<RNAStructure::BaseData *> enclosingArcs = Util::getEnclosingArcs(rnaStructBase, false);
-     sort(enclosingArcs.begin(), enclosingArcs.begin() + 4, Util::RNAStructureBaseDataIndexSort());
      if(enclosingArcs.size() < 7 || mostEnclosingArcsSize < 4) {
           fprintf(stderr, "HUGE LOGISTICAL ERROR: There are not 7 / 4 main arcs / branches to classify!\n");
           return false;
      }
+     sort(enclosingArcs.begin(), enclosingArcs.begin() + 4, Util::RNAStructureBaseDataIndexSort());
      // handle labeling of the arc nubbins (and contained pairs) to the sides of the big arcs: 
      vector<RNAStructure::BaseData *> enclosingArcsNubbins(enclosingArcs.begin() + 4, enclosingArcs.begin() + 7);
      sort(enclosingArcsNubbins.begin(), enclosingArcsNubbins.end(), Util::RNAStructureBaseDataIndexSort());

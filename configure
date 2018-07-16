@@ -669,10 +669,8 @@ am__isrc
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
-LDFLAGS_X11
-LDFLAGS_MESA
-LDFLAGS_FLTK
-CXXFLAGS_FLTK
+LDFLAGS_EXTRA
+CXXFLAGS_EXTRA
 ac_ct_CC
 CFLAGS
 CC
@@ -725,6 +723,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_cairo
 enable_dependency_tracking
 enable_silent_rules
 '
@@ -1365,6 +1364,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-cairo          build with Cairo drawing lib support
   --enable-dependency-tracking
                           do not reject slow dependency extractors
   --disable-dependency-tracking
@@ -3402,15 +3402,37 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+# Check whether --enable-cairo was given.
+if test "${enable_cairo+set}" = set; then :
+  enableval=$enable_cairo; case "${enableval}" in #(
+  yes) :
+    enablecairo=1 ;; #(
+  no) :
+    enablecairo=0 ;; #(
+  *) :
+    as_fn_error $? "bad value ${enableval} for --enable-cairo" "$LINENO" 5 ;;
+esac
+else
+  enablecairo=1
+fi
+
+
 # Checks for libraries.
 
-CXXFLAGS_FLTK="`fltk-config --use-gl --cxxflags`"
-#LDFLAGS_FLTK="`fltk-config --use-gl --ldflags`"
-LDFLAGS_FLTK="`find /usr/ -iname '*fltk*.so' | tr "\n" " "`"
-LDFLAGS_MESA="`find /usr/lib -iname '*libGL.so.1' | tr "\n" " "`"
-LDFLAGS_X11="-lX11"
+CXXFLAGS_EXTRA=""
+LDFLAGS_EXTRA=""
 
+if test "$enablecairo" == "1"; then :
 
+$as_echo "#define WITH_CAIRO_SUPPORT 1" >>confdefs.h
+
+fi
+if test "$enablecairo" == "1"; then :
+  CXXFLAGS_EXTRA+="`pkg-config --cflags cairo` -DWITH_CAIRO_SUPPORT"
+fi
+if test "$enablecairo" == "1"; then :
+  LDFLAGS_EXTRA+="`pkg-config --libs cairo`"
+fi
 
 
 
